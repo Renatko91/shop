@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <h1>Shop</h1>
+</h:head>
+
+<h:body>
+    <h:form>
+    <hr/>
+    <h2>Создание товара</h2>
+        <table>
+            <tr>
+                <td><h3>Наименование</h3></td>
+                <td><h3>Цена</h3></td>
+                <td><h3>Количество</h3></td>
+            </tr>
+            <tr>
+
+                    <td><h:inputText value="#{cartBean.name}"/></td>
+                    <td><h:inputText value="#{cartBean.price}"/></td>
+                    <td><h:inputText value="#{cartBean.quantity}"/></td>
+
+            </tr>
+        </table>
+    <h:commandButton value="Создать товар" action="#{cartBean.createProduct}"/>
+
+    <hr/>
+    <h2>Создание заказа</h2>
+    <table>
+        <tr>
+            <td><h:commandButton value="Создать заказ" action="#{cartBean.createCart}"/></td>
+        </tr>
+    </table>
+
+    <hr/>
+    <h2>Список товаров</h2>
+        <h:dataTable value="#{cartBean.product}" var="product">
+            <h:column>
+                <f:facet name="header">Наименование</f:facet>
+                <h4><h:outputText value="#{product.name}" /></h4>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Цена</f:facet>
+                <h4><h:outputText value="#{product.price}" /></h4>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Количество</f:facet>
+                <h4><h:outputText value="#{product.quantity}" /></h4>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Необходимое количество</f:facet>
+                <h4><h:inputText value="#{cartBean.needQuantity}" /></h4>
+            </h:column>
+            <h:column>
+                <h:commandButton value="Добавить" action="#{cartBean.addProduct(product)}"/>
+            </h:column>
+        </h:dataTable>
+    </h:form>
+    <hr/>
+    <h2>Товары в в заказе</h2>
+        <h:dataTable value="#{cartBean.productInCart}" var="product">
+            <h:column>
+                <f:facet name="header">Наименование</f:facet>
+                <h4><h:outputText value="#{product.name}" /></h4>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Цена</f:facet>
+                <h4><h:outputText value="#{product.price}" /></h4>
+            </h:column>
+            <h:column>
+                <f:facet name="header">Количество</f:facet>
+                <h4><h:outputText value="#{product.quantity}" /></h4>
+            </h:column>
+        </h:dataTable>
+</h:body>
+</html>
