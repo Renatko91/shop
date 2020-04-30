@@ -25,7 +25,7 @@ public class CartManagerBean {
         return cart;
     }
 
-    public boolean addToCart(long productId, long cartId, int needQuantity) {
+    public boolean addToCart(long productId, long cartId) {
         Product product = entityManager.find(Product.class, productId);
         if(product == null) {
             return false;
@@ -39,7 +39,6 @@ public class CartManagerBean {
         ProductInCart productInCart = new ProductInCart();
         productInCart.setCart(cart);
         productInCart.setProduct(product);
-        productInCart.setQuantityInCart(needQuantity);
         entityManager.persist(productInCart);
 
         return true;

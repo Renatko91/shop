@@ -6,28 +6,33 @@ import ru.javadev.domain.Product;
 import ru.javadev.ejb.CartManagerBean;
 import ru.javadev.ejb.ProductManagerBean;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Named
 @SessionScoped
 public class CartBean implements Serializable {
     private Cart cart;
     private Product product;
+    private List<Product> products;
     private String name;
     private int price;
     private int quantity;
-    private int needQuantity;
 
     @EJB
     CartManagerBean cartManagerBean;
 
     @EJB
     ProductManagerBean productManagerBean;
+
+    @PostConstruct
+    public void init() {
+        products = productManagerBean.getProduct();
+    }
 
     public String getName() {
         return name;
@@ -49,14 +54,6 @@ public class CartBean implements Serializable {
 
     public void setQuantity(int quantity) { this.quantity = quantity; }
 
-    public int getNeedQuantity() {
-        return needQuantity;
-    }
-
-    public void setNeedQuantity(int needQuantity) {
-        this.needQuantity = needQuantity;
-    }
-
     public void createCart() {
         if(cart == null) {
             cart = cartManagerBean.createCart();
@@ -67,16 +64,23 @@ public class CartBean implements Serializable {
         productManagerBean.createProduct(name, price, quantity);
     }
 
-    public List<Product> getProduct() {
-        return productManagerBean.getProduct();
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public List<Product> getProducts() {
+        return products;
     }
 
     public void addProduct(Product product) {
         if(cart == null) {
             return;
         }
-
-        cartManagerBean.addToCart(product.getId(), cart.getId(), needQuantity);
+        cartManagerBean.addToCart(product.getId(), cart.getId());
     }
 
     public List<Product> getProductInCart() {

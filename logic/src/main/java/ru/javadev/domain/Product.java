@@ -12,7 +12,7 @@ public class Product {
     private int price;
     private int quantity;
 
-    @OneToMany (fetch = FetchType.EAGER, mappedBy = "product")
+    @OneToMany (mappedBy = "product")
     private List<ProductInCart> productInCart;
 
     public long getId() {
