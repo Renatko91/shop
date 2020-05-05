@@ -13,6 +13,17 @@
 
 <h:body>
 <p:outputPanel>
+    <script type="text/javascript">
+        function handleLoginRequest(xhr, status, args) {
+            if(args.validationFailed || !args.loggedIn) {
+                PF('dlg').jq.effect("shake", {times:5}, 100);
+            }
+            else {
+                PF('dlg').hide();
+                $('#loginLink').fadeOut();
+            }
+        }
+    </script>
 
     <div class="ui-grid">
         <div class="ui-grid-row">
@@ -27,10 +38,10 @@
                     <h:commandButton value="O-" action="#{cartBean.product}"/>
                 </div>
                 <div class="ui-grid-col-1">
-                    <h:commandButton value="Войти" action="#{cartBean.product}"/>
+                    <ui:include src="Login.xhtml"></ui:include>
                 </div>
                 <div class="ui-grid-col-2">
-                    <h:commandButton value="Регистрация" action="#{cartBean.product}"/>
+                    <ui:include src="Registration.xhtml"></ui:include>
                 </div>
                 <div class="ui-grid-col-11"></div>
                 <div class="ui-grid-col-1">
