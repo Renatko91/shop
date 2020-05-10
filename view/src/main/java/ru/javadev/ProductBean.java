@@ -1,6 +1,7 @@
 package ru.javadev;
 
 
+import org.primefaces.event.RowEditEvent;
 import ru.javadev.domain.Cart;
 import ru.javadev.domain.Product;
 import ru.javadev.ejb.CartManagerBean;
@@ -9,19 +10,20 @@ import ru.javadev.ejb.ProductManagerBean;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.*;
 
 @Named
 @SessionScoped
-public class CartBean implements Serializable {
+public class ProductBean implements Serializable {
     private Cart cart;
     private Product product;
     private List<Product> products;
     private String name;
     private int price;
-    private int quantity;
 
     @EJB
     CartManagerBean cartManagerBean;
@@ -50,10 +52,6 @@ public class CartBean implements Serializable {
         this.price = price;
     }
 
-    public int getQuantity() { return quantity; }
-
-    public void setQuantity(int quantity) { this.quantity = quantity; }
-
     public void createCart() {
         if(cart == null) {
             cart = cartManagerBean.createCart();
@@ -61,7 +59,7 @@ public class CartBean implements Serializable {
     }
 
     public void createProduct() {
-        productManagerBean.createProduct(name, price, quantity);
+        productManagerBean.createProduct(name, price);
     }
 
     public void setProduct(Product product) {
@@ -89,5 +87,31 @@ public class CartBean implements Serializable {
         }
 
         return cartManagerBean.getProductInCart(cart.getId());
+    }
+
+    public void onRowEdit(RowEditEvent event) {
+        Product editProduct = (Product)event.getObject();
+        productManagerBean.editProduct(editProduct);
+        FacesMessage msg = new FacesMessage("Изменено", String.valueOf(editProduct.getId()));
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
+    public void onRowCancel(RowEditEvent event) {
+        FacesMessage msg = new FacesMessage("Вышел");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
+    public void onAddNew() {
+        Product newProduct = productManagerBean.createProduct(name, price);
+        products.add(newProduct);
+        FacesMessage msg = new FacesMessage("Новый продукт добавлен", String.valueOf(newProduct.getId()));
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+
+    public void onDelete() {
+        products.remove(product);
+        productManagerBean.deleteProduct(product.getId());
+        FacesMessage msg = new FacesMessage("Продукт удален");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 }

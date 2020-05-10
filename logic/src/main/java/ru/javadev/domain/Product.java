@@ -10,7 +10,6 @@ public class Product {
     private long id;
     private String name;
     private int price;
-    private int quantity;
 
     @OneToMany (mappedBy = "product")
     private List<ProductInCart> productInCart;
@@ -37,14 +36,6 @@ public class Product {
 
     public void setPrice(int price) {
         this.price = price;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
     }
 
     public List<ProductInCart> getProductInCart() {

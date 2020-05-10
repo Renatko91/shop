@@ -23,17 +23,17 @@
             </tr>
             <tr>
 
-                    <td><h:inputText value="#{cartBean.name}"/></td>
-                    <td><h:inputText value="#{cartBean.price}"/></td>
-                    <td><h:inputText value="#{cartBean.quantity}"/></td>
+                    <td><h:inputText value="#{productBean.name}"/></td>
+                    <td><h:inputText value="#{productBean.price}"/></td>
+                    <td><h:inputText value="#{productBean.quantity}"/></td>
 
             </tr>
         </table>
-    <h:commandButton value="Создать товар" action="#{cartBean.createProduct}"/>
+    <h:commandButton value="Создать товар" action="#{productBean.createProduct}"/>
 
     <hr/>
     <h2>Список товаров</h2>
-            <h:dataTable value="#{cartBean.product}" var="product">
+            <h:dataTable value="#{productBean.product}" var="product">
                 <h:column>
                     <f:facet name="header">Наименование</f:facet>
                     #{product.name}
@@ -47,13 +47,13 @@
                     #{product.quantity}
                 </h:column>
                 <h:column>
-                    <h:commandButton value="Отправка" action="#{cartBean.addProduct(product)}"/>
+                    <h:commandButton value="Отправка" action="#{productBean.addProduct(product)}"/>
                 </h:column>
             </h:dataTable>
 
     <hr/>
     <h2>Товары в заказе</h2>
-        <h:dataTable value="#{cartBean.productInCart}" var="product">
+        <h:dataTable value="#{productBean.productInCart}" var="product">
             <h:column>
                 <f:facet name="header">Наименование</f:facet>
                 <h4><h:outputText value="#{product.name}" /></h4>
@@ -69,7 +69,7 @@
         </h:dataTable>
     <table>
         <tr>
-            <td><h:commandButton value="Создать заказ" action="#{cartBean.createCart}"/></td>
+            <td><h:commandButton value="Создать заказ" action="#{productBean.createCart}"/></td>
         </tr>
     </table>
     </h:form>

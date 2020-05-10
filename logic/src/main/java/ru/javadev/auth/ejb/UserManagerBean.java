@@ -1,6 +1,7 @@
 package ru.javadev.auth.ejb;
 
 import ru.javadev.auth.domain.User;
+import ru.javadev.domain.Product;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -33,6 +34,19 @@ public class UserManagerBean {
         return entityManager.createQuery("select u from Users u", User.class).getResultList();
     }
 
+    public User editUser(User user) {
+        entityManager.merge(user);
+
+        return user;
+    }
+
+    public User deleteUser(long id) {
+        User user2 = entityManager.find(User.class, id);
+        entityManager.remove(user2);
+
+        return user2;
+    }
+
     public int CheckLogin(String login) {
         List<User> logins = entityManager.createQuery("select u from Users u where u.login = :login").setParameter("login", login).getResultList();
         return logins.size();
@@ -51,5 +65,10 @@ public class UserManagerBean {
     public int CheckEmail(String email) {
         List<User> emails = entityManager.createQuery("select u from Users u where u.email = :email").setParameter("email", email).getResultList();
         return emails.size();
+    }
+
+    public boolean AdminStatus(String login) {
+        List<User> adminstatus = entityManager.createQuery("select u from Users u where u.login = :login").setParameter("login", login).getResultList();
+        return adminstatus.get(0).isAdmin();
     }
 }

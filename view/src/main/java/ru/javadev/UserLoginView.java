@@ -12,6 +12,8 @@ import org.primefaces.context.RequestContext;
 import ru.javadev.auth.domain.User;
 import ru.javadev.auth.ejb.UserManagerBean;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
@@ -24,10 +26,36 @@ public class UserLoginView implements Serializable {
     private String email;
     private String number;
     User user;
-    private List<User> users;
+    boolean loggedIn = false;
+    boolean adminIn = false;
+    boolean regedIn = false;
 
     @EJB
     UserManagerBean userManagerBean;
+
+    public boolean isLoggedIn() {
+        return loggedIn;
+    }
+
+    public void setLoggedIn(boolean loggedIn) {
+        this.loggedIn = loggedIn;
+    }
+
+    public boolean isAdminIn() {
+        return adminIn;
+    }
+
+    public void setAdminIn(boolean adminIn) {
+        this.adminIn = adminIn;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public String getLogin() {
         return login;
@@ -69,9 +97,8 @@ public class UserLoginView implements Serializable {
         this.number = number;
     }
 
-    public void login() {
+    public void login() throws IOException {
         FacesMessage message = null;
-        boolean loggedIn = false;
 
         if(userManagerBean.CheckLogin(login) == 0) {
             loggedIn = false;
@@ -81,15 +108,16 @@ public class UserLoginView implements Serializable {
             message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Ошибка", "Пароль не существует");
         } else {
             loggedIn = true;
+            adminIn = userManagerBean.AdminStatus(login);
             message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Добро пожаловать", login);
         }
         FacesContext.getCurrentInstance().addMessage(null, message);
         RequestContext.getCurrentInstance().addCallbackParam("loggedIn", loggedIn);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
     }
 
     public void registration() {
         FacesMessage message = null;
-        boolean regedIn = false;
 
         if(userManagerBean.CheckLogin(login) != 0) {
             regedIn = false;
@@ -107,5 +135,12 @@ public class UserLoginView implements Serializable {
         }
         FacesContext.getCurrentInstance().addMessage(null, message);
         RequestContext.getCurrentInstance().addCallbackParam("regedIn", regedIn);
+    }
+
+    public void exit() throws IOException {
+        loggedIn = false;
+        adminIn = false;
+        RequestContext.getCurrentInstance().addCallbackParam("loggedIn", loggedIn);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
     }
 }

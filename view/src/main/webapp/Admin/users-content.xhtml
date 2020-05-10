@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head/>
+
+<h:body>
+    <style type="text/css">
+        .ui-row-editor .ui-row-editor-pencil {
+            margin-left:8px;
+        }
+    </style>
+
+
+    <h:form id="form">
+        <p:growl id="msgs" showDetail="true"/>
+
+        <p:dataTable id="table" widgetVar="user1" var="user" value="#{userBean.users}" editable="true" rowKey="#{user.id}"
+                     selection="#{userBean.user}" selectionMode="single" style="margin-bottom:20px">
+            <f:facet name="header">
+                Пользователи
+            </f:facet>
+
+            <p:ajax event="rowEdit" listener="#{userBean.onRowEdit}" update=":form:msgs" />
+            <p:ajax event="rowEditCancel" listener="#{userBean.onRowCancel}" update=":form:msgs" />
+
+            <p:column headerText="Id">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputText value="#{user.id}" /></f:facet>
+                    <f:facet name="input"><p:inputText value="#{user.id}" style="width:100%"/></f:facet>
+                </p:cellEditor>
+            </p:column>
+
+            <p:column headerText="Логин">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputText value="#{user.login}" /></f:facet>
+                    <f:facet name="input"><p:inputText value="#{user.login}" style="width:100%" label="Логин"/></f:facet>
+                </p:cellEditor>
+            </p:column>
+
+            <p:column headerText="Пароль">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputText value="#{user.password}" /></f:facet>
+                    <f:facet name="input"><p:inputText value="#{user.password}" style="width:100%" label="Пароль"/></f:facet>
+                </p:cellEditor>
+            </p:column>
+
+            <p:column headerText="Город">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputText value="#{user.city}" /></f:facet>
+                    <f:facet name="input"><p:inputText value="#{user.city}" style="width:100%" label="Город"/></f:facet>
+                </p:cellEditor>
+            </p:column>
+
+            <p:column headerText="Емайл">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputText value="#{user.email}" /></f:facet>
+                    <f:facet name="input"><p:inputText value="#{user.email}" style="width:100%" label="Емайл"/></f:facet>
+                </p:cellEditor>
+            </p:column>
+
+            <p:column headerText="Номер">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputText value="#{user.number}" /></f:facet>
+                    <f:facet name="input"><p:inputText value="#{user.number}" style="width:100%" label="Номер"/></f:facet>
+                </p:cellEditor>
+            </p:column>
+
+            <p:column headerText="Статус администратора">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputText value="#{user.admin}" /></f:facet>
+                    <f:facet name="input"><p:inputText value="#{user.admin}" style="width:100%" label="Админка"/></f:facet>
+                </p:cellEditor>
+            </p:column>
+
+            <p:column style="width:35px">
+                <p:rowEditor />
+            </p:column>
+        </p:dataTable>
+
+        <p:contextMenu for="table">
+            <p:menuitem value="Удалить" update="table" icon="pi pi-times" action="#{userBean.onDelete}"/>
+        </p:contextMenu>
+
+        <h:panelGroup id="panel">
+            <div class="ui-grid">
+                <div class="ui-grid-row">
+                    <div class="ui-grid-col-1">
+                        <h:outputText value="Логин" />
+                    </div>
+                    <div class="ui-grid-col-2">
+                        <h:inputText value="#{userBean.login}" />
+                    </div>
+                    <div class="ui-grid-col-1">
+                        <h:outputText value="Пароль" />
+                    </div>
+                    <div class="ui-grid-col-2">
+                        <h:inputText value="#{userBean.password}" />
+                    </div>
+                    <div class="ui-grid-col-1">
+                        <h:outputText value="Город" />
+                    </div>
+                    <div class="ui-grid-col-2">
+                        <h:inputText value="#{userBean.city}" />
+                    </div>
+                    <div class="ui-grid-col-1">
+                        <h:outputText value="Емайл" />
+                    </div>
+                    <div class="ui-grid-col-2">
+                        <h:inputText value="#{userBean.email}" />
+                    </div>
+                </div>
+                <div class="ui-grid-row">
+                    <div class="ui-grid-col-1">
+                        <h:outputText value="Номер" />
+                    </div>
+                    <div class="ui-grid-col-2">
+                        <h:inputText value="#{userBean.number}" />
+                    </div>
+                    <div class="ui-grid-col-1">
+                        <h:outputText value="Админка" />
+                    </div>
+                    <div class="ui-grid-col-2">
+                        <h:inputText value="#{userBean.admin}" />
+                    </div>
+
+                    <div class="ui-grid-col-4">
+                        <p:commandButton value="Добавить пользователя" styleClass="ui-priority-primary" process="@this form:panel" update="table"
+                                         action="#{userBean.onAddNew()}" oncomplete="PF('user').addRow();"/>
+                    </div>
+                </div>
+            </div>
+        </h:panelGroup>
+    </h:form>
+</h:body>
+</html>

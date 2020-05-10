@@ -16,11 +16,10 @@ public class ProductManagerBean {
     @PersistenceContext(unitName = "shopPU")
     private EntityManager entityManager;
 
-    public Product createProduct(String name, int price, int quantity) {
+    public Product createProduct(String name, int price) {
         Product product = new Product();
         product.setName(name);
         product.setPrice(price);
-        product.setQuantity(quantity);
         entityManager.persist(product);
 
         return product;
@@ -29,5 +28,18 @@ public class ProductManagerBean {
     public List<Product> getProduct() {
         TypedQuery<Product> query = entityManager.createQuery("select c from Product c", Product.class);
         return query.getResultList();
+    }
+
+    public Product editProduct(Product product) {
+        entityManager.merge(product);
+
+        return product;
+    }
+
+    public Product deleteProduct(long id) {
+        Product product2 = entityManager.find(Product.class, id);
+        entityManager.remove(product2);
+
+        return product2;
     }
 }

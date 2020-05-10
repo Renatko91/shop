@@ -20,7 +20,7 @@
 
 
     <h:form id="form">
-        <p:dataGrid var="product" value="#{cartBean.products}" columns="3" layout="grid"
+        <p:dataGrid var="product" value="#{productBean.products}" columns="3" layout="grid"
                     rows="12" paginator="true" id="products"
                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                     rowsPerPageTemplate="6,12,16">
@@ -37,7 +37,8 @@
 
                     <p:commandLink update=":form:productDetail" oncomplete="PF('productDialog').show()" title="View Detail">
                         <h:outputText value="Просмотр" style="margin:0 auto;"/>
-                        <f:setPropertyActionListener value="#{product}" target="#{cartBean.product}" />
+                        <f:setPropertyActionListener value="#{product}" target="#{productBean.product}" />
+                        <h:commandButton value="Добавить" action="#{productBean.addProduct(product)}"/>
                     </p:commandLink>
                 </h:panelGrid>
             </p:panel>
@@ -46,16 +47,16 @@
 
         <p:dialog header="Информация о продукте" widgetVar="productDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
             <p:outputPanel id="productDetail" style="text-align:center;">
-                <p:panelGrid  columns="2" rendered="#{not empty cartBean.product}" columnClasses="label,value">
+                <p:panelGrid columns="2" rendered="#{not empty productBean.product}" columnClasses="label,value">
                     <f:facet name="header">
-                        <p:graphicImage name="resources/product/#{cartBean.product.name}-big.gif"/>
+                        <p:graphicImage name="resources/product/#{productBean.product.name}-big.gif"/>
                     </f:facet>
 
                     <h:outputText value="Name:" />
-                    <h:outputText value="#{cartBean.product.name}" />
+                    <h:outputText value="#{productBean.product.name}" />
 
                     <h:outputText value="Price:" />
-                    <h:outputText value="#{cartBean.product.price}" />
+                    <h:outputText value="#{productBean.product.price}" />
                 </p:panelGrid>
             </p:outputPanel>
         </p:dialog>
