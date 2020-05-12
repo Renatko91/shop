@@ -34,6 +34,10 @@ public class UserManagerBean {
         return entityManager.createQuery("select u from Users u", User.class).getResultList();
     }
 
+    public User getUser(String login) {
+        return (User)entityManager.createQuery("select u from Users u where u.login = :login").setParameter("login", login).getResultList().get(0);
+    }
+
     public User editUser(User user) {
         entityManager.merge(user);
 

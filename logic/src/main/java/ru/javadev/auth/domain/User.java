@@ -1,6 +1,10 @@
 package ru.javadev.auth.domain;
 
+import ru.javadev.domain.CartInUser;
+import ru.javadev.domain.ProductInCart;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity(name="Users")
 public class User {
@@ -12,7 +16,10 @@ public class User {
     private String city;
     private String number;
     private String email;
-    private boolean admin;;
+    private boolean admin;
+
+    @OneToMany (mappedBy = "user")
+    private List<CartInUser> cartInUsers;
 
     public long getId() {
         return id;
@@ -68,5 +75,13 @@ public class User {
 
     public void setAdmin(boolean admin) {
         this.admin = admin;
+    }
+
+    public List<CartInUser> getCartInUsers() {
+        return cartInUsers;
+    }
+
+    public void setCartInUsers(List<CartInUser> cartInUsers) {
+        this.cartInUsers = cartInUsers;
     }
 }

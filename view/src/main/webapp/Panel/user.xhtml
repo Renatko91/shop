@@ -13,13 +13,16 @@
 
 <h:body>
     <p:outputPanel>
-        <div class="ui-grid-col-12">#{userLoginView.user.login}</div>
-        <div class="ui-grid-col-5">
-            <p:commandButton value="Заказы" action="Admin/products?faces-redirect=true" />
-        </div>
-        <div class="ui-grid-col-7">
-            <p:commandButton value="Корзина" action="Admin/users?faces-redirect=true" />
-        </div>
+            <div class="ui-grid-col-12">#{userLoginView.user.login}</div>
+            <div class="ui-grid-col-5">
+                <p:commandButton value="Заказы" action="order?faces-redirect=true" />
+            </div>
+            <div class="ui-grid-col-6">
+                <p:commandButton value="Корзина" action="cart?faces-redirect=true" />
+            </div>
+            <div class="ui-grid-col-1">
+                <h:outputText id="cartSize" value="#{productBean.userCartSize}" style="color: red; font-size: x-large;"/>
+            </div>
     </p:outputPanel>
 </h:body>
 </html>

@@ -1,6 +1,8 @@
 package ru.javadev.ejb;
 
+import ru.javadev.auth.domain.User;
 import ru.javadev.domain.Cart;
+import ru.javadev.domain.CartInUser;
 import ru.javadev.domain.Product;
 import ru.javadev.domain.ProductInCart;
 
@@ -25,7 +27,7 @@ public class CartManagerBean {
         return cart;
     }
 
-    public boolean addToCart(long productId, long cartId) {
+    public boolean addToCart(long productId, long cartId, int quantity) {
         Product product = entityManager.find(Product.class, productId);
         if(product == null) {
             return false;
@@ -39,21 +41,44 @@ public class CartManagerBean {
         ProductInCart productInCart = new ProductInCart();
         productInCart.setCart(cart);
         productInCart.setProduct(product);
+        productInCart.setQuantity(quantity);
         entityManager.persist(productInCart);
 
         return true;
     }
 
-    public List<Product> getProductInCart(long cartId) {
+    public boolean addUserCart(long cartId, long userId, int size, int sum) {
         Cart cart = entityManager.find(Cart.class, cartId);
-        if(cart == null) {
+        if (cart == null) {
+            return false;
+        }
+
+        User user = entityManager.find(User.class, userId);
+        if (user == null) {
+            return false;
+        }
+
+        CartInUser cartInUser = new CartInUser();
+        cartInUser.setUser(user);
+        cartInUser.setCart(cart);
+        cart.setSize(size);
+        cart.setSum(sum);
+        entityManager.persist(cartInUser);
+        entityManager.merge(cart);
+
+        return true;
+    }
+
+    public List<Cart> getCartInUser(long userId) {
+        User user = entityManager.find(User.class, userId);
+        if(user == null) {
             return Collections.emptyList();
         }
 
-        List<ProductInCart> productInCarts = cart.getProductInCart();
-        ArrayList<Product> result = new ArrayList<>();
-        for(ProductInCart productInCart : productInCarts) {
-            result.add(productInCart.getProduct());
+        List<CartInUser> cartInUsers = user.getCartInUsers();
+        ArrayList<Cart> result = new ArrayList<>();
+        for(CartInUser cartInUser : cartInUsers) {
+            result.add(cartInUser.getCart());
         }
         return result;
     }

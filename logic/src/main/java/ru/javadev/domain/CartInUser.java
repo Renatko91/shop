@@ -1,19 +1,20 @@
 package ru.javadev.domain;
 
+import ru.javadev.auth.domain.User;
+
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
-public class ProductInCart {
+public class CartInUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    private int quantity;
+
 
     @ManyToOne
-    private Product product;
-    @ManyToOne
     private Cart cart;
+    @ManyToOne
+    private User user;
 
     public long getId() {
         return id;
@@ -23,27 +24,19 @@ public class ProductInCart {
         this.id = id;
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
     public Cart getCart() {
         return cart;
     }
 
     public void setCart(Cart cart) {
         this.cart = cart;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

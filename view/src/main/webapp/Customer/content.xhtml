@@ -38,7 +38,6 @@
                     <p:commandLink update=":form:productDetail" oncomplete="PF('productDialog').show()" title="View Detail">
                         <h:outputText value="Просмотр" style="margin:0 auto;"/>
                         <f:setPropertyActionListener value="#{product}" target="#{productBean.product}" />
-                        <h:commandButton value="Добавить" action="#{productBean.addProduct(product)}"/>
                     </p:commandLink>
                 </h:panelGrid>
             </p:panel>
@@ -48,15 +47,22 @@
         <p:dialog header="Информация о продукте" widgetVar="productDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
             <p:outputPanel id="productDetail" style="text-align:center;">
                 <p:panelGrid columns="2" rendered="#{not empty productBean.product}" columnClasses="label,value">
-                    <f:facet name="header">
-                        <p:graphicImage name="resources/product/#{productBean.product.name}-big.gif"/>
-                    </f:facet>
-
-                    <h:outputText value="Name:" />
+                    <h:outputText value="Название:" />
                     <h:outputText value="#{productBean.product.name}" />
 
-                    <h:outputText value="Price:" />
+                    <h:outputText value="Цена:" />
                     <h:outputText value="#{productBean.product.price}" />
+
+                    <c:set var="log" value="#{userLoginView.loggedIn}"/>
+                    <c:set var="adm" value="#{userLoginView.adminIn}"/>
+                    <c:if test="${(log) and (not adm)}">
+                        <h:form id="form1">
+                            <h:outputText value="Количество:" />
+                            <h:inputText value="#{productBean.quantity}" />
+                            <p:commandButton value="Добавить" process="@this form1" update=":cartSize" action="#{productBean.addProduct()}">
+                            </p:commandButton>
+                        </h:form>
+                    </c:if>
                 </p:panelGrid>
             </p:outputPanel>
         </p:dialog>

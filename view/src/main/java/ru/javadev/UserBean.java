@@ -15,6 +15,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
@@ -123,17 +124,19 @@ public class UserBean implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
-    public void onAddNew() {
+    public void onAddNew() throws IOException {
         User newUser = userManagerBean.createUser(login, password, city, email, number, admin);
         users.add(newUser);
         FacesMessage msg = new FacesMessage("Новый пользователь добавлен", String.valueOf(newUser.getId()));
         FacesContext.getCurrentInstance().addMessage(null, msg);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("users.xhtml");
     }
 
-    public void onDelete() {
+    public void onDelete() throws IOException {
         users.remove(user);
         userManagerBean.deleteUser(user.getId());
         FacesMessage msg = new FacesMessage("Пользователь удален");
         FacesContext.getCurrentInstance().addMessage(null, msg);
+        FacesContext.getCurrentInstance().getExternalContext().redirect("users.xhtml");
     }
 }

@@ -109,6 +109,7 @@ public class UserLoginView implements Serializable {
         } else {
             loggedIn = true;
             adminIn = userManagerBean.AdminStatus(login);
+            user = userManagerBean.getUser(login);
             message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Добро пожаловать", login);
         }
         FacesContext.getCurrentInstance().addMessage(null, message);

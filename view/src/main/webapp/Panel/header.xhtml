@@ -13,45 +13,50 @@
 
 <h:body>
 <p:outputPanel>
-    <div class="ui-grid">
-        <div class="ui-grid-row">
-            <div class="ui-grid-col-2">
-                <h:outputLink value="index.xhtml" style="text-decoration: none; font-size: xx-large; color: cornflowerblue;">
-                    SHOP-JAVA EE
-                </h:outputLink>
-            </div>
-            <div class="ui-grid-col-10">
-                <div class="ui-grid-col-8">
-                    <div class="ui-grid-col-2">Поиск</div>
-                    <div class="ui-grid-col-8" >
-                        <h:inputText value="#{productBean.name}" size="80"/>
-                    </div>
-                    <div class="ui-grid-col-2">
-                        <h:commandButton value="O-" action="#{productBean.product}"/>
-                    </div>
+
+        <div class="ui-grid">
+            <div class="ui-grid-row">
+                <div class="ui-grid-col-2">
+                    <h:outputLink value="index.xhtml" style="text-decoration: none; font-size: xx-large; color: cornflowerblue;">
+                        SHOP-JAVA EE
+                    </h:outputLink>
                 </div>
-                <div class="ui-grid-col-4">
-                    <c:set var="log" value="#{userLoginView.loggedIn}"/>
-                    <c:set var="adm" value="#{userLoginView.adminIn}"/>
-                    <c:if test="${(log) and (not adm)}">
-                        <ui:include src="user.xhtml"></ui:include>
-                    </c:if>
-                    <c:if test="${(log) and (adm)}">
-                        <ui:include src="admin.xhtml"></ui:include>
-                    </c:if>
-                    <c:if test="${(not log) and (not adm)}">
-                        <ui:include src="customer.xhtml"></ui:include>
-                    </c:if>
-                </div>
-                <div class="ui-grid-col-12">
-                    <div class="ui-grid-col-11"></div>
-                    <div class="ui-grid-col-1">
-                        <p:commandButton value="Выйти" action="#{userLoginView.exit}"/>
+
+                <div class="ui-grid-col-10">
+                    <div class="ui-grid-col-8">
+                        <h:form id="formFind">
+                            <div class="ui-grid-col-2">Поиск</div>
+                            <div class="ui-grid-col-8" >
+                                <h:inputText value="#{productBean.findName}" size="80"/>
+                            </div>
+                            <div class="ui-grid-col-2">
+                                <h:commandButton value="O-" action="#{productBean.find}"/>
+                        </div>
+                        </h:form>
+                    </div>
+                    <div class="ui-grid-col-4">
+                        <c:set var="log" value="#{userLoginView.loggedIn}"/>
+                        <c:set var="adm" value="#{userLoginView.adminIn}"/>
+                        <c:if test="${(log) and (not adm)}">
+                            <ui:include src="user.xhtml"></ui:include>
+                        </c:if>
+                        <c:if test="${(log) and (adm)}">
+                            <ui:include src="admin.xhtml"></ui:include>
+                        </c:if>
+                        <c:if test="${(not log) and (not adm)}">
+                            <ui:include src="customer.xhtml"></ui:include>
+                        </c:if>
+                    </div>
+                    <div class="ui-grid-col-12">
+                        <div class="ui-grid-col-11"></div>
+                        <div class="ui-grid-col-1">
+                            <p:commandButton value="Выйти" action="#{userLoginView.exit}"/>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+
 </p:outputPanel>
 </h:body>
 </html>
