@@ -16,3 +16,5 @@ Architecture project:
   - ear (join logic and view)
     - logic (frontend)
     - view (backend)
+
+![Online shop](https://i.imgur.com/yQ2qsUo.gif)
