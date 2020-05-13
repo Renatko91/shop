@@ -21,7 +21,7 @@ import java.util.*;
 
 @Named
 @SessionScoped
-public class ProductBean implements Serializable {
+public class ProductBean implements Serializable {                 //отвечает за получение и добавление товаров в фронт и бэк
     private Cart cart;
     private Product product;
     private User user;
@@ -76,7 +76,7 @@ public class ProductBean implements Serializable {
         }
     }
 
-    public void createProduct() {
+    public void createProduct() {     //создать продукт, отправляем в EJB содержимое полей name и price
         productManagerBean.createProduct(name, price);
     }
 
@@ -96,7 +96,7 @@ public class ProductBean implements Serializable {
         userCart.put(product, quantity);
     }
 
-    public List<Cart> getCartInUser() {
+    public List<Cart> getCartInUser() {    //получить все заказв пользователя из базы
         user = userLoginView.getUser();
         if(user == null) {
             return Collections.emptyList();
@@ -121,7 +121,7 @@ public class ProductBean implements Serializable {
         this.userCart = userCart;
     }
 
-    public int getUserCartSize() {
+    public int getUserCartSize() {        //получить кол-во товара в корзине до отправления в базу
         int amount = 0;
         for(Map.Entry<Product, Integer> item : userCart.entrySet()) {
             amount = amount + item.getValue();
@@ -129,7 +129,7 @@ public class ProductBean implements Serializable {
         return amount;
     }
 
-    public int getUserCartSum() {
+    public int getUserCartSum() {        //получить общую сумму товаров в корзине до отправления в базу
         int sum = 0;
         for(Map.Entry<Product, Integer> item : userCart.entrySet()) {
             sum = sum + item.getKey().getPrice() * item.getValue();
@@ -137,7 +137,7 @@ public class ProductBean implements Serializable {
         return sum;
     }
 
-    public void onRowEdit(RowEditEvent event) {
+    public void onRowEdit(RowEditEvent event) {          //редактирование поля в таблице продуктов в админке
         Product editProduct = (Product)event.getObject();
         productManagerBean.editProduct(editProduct);
         FacesMessage msg = new FacesMessage("Изменено", String.valueOf(editProduct.getId()));
@@ -165,8 +165,8 @@ public class ProductBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().redirect("products.xhtml");
     }
 
-    public void checkout() throws IOException {
-        cart = cartManagerBean.createCart();
+    public void checkout() throws IOException {         //отправляем ид корзины и ид пользователя в EJB
+        cart = cartManagerBean.createCart();            //отправляем ид корзины и ид товаров в EJB
         user = userLoginView.getUser();
         cartManagerBean.addUserCart(cart.getId(), user.getId(), getUserCartSize(), getUserCartSum());
         for(Map.Entry<Product,Integer> item : userCart.entrySet()) {
@@ -175,7 +175,7 @@ public class ProductBean implements Serializable {
         userCart.clear();
     }
 
-    public void find() {
+    public void find() {                                                                        //поиск в заполненом листе товаров
         List<Product> result = new ArrayList<>();
         result = productManagerBean.getProduct();
         for(Product p : products) {

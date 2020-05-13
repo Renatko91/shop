@@ -18,7 +18,7 @@ import java.util.List;
 @LocalBean
 public class CartManagerBean {
 
-    @PersistenceContext(unitName = "shopPU")
+    @PersistenceContext(unitName = "shopPU")        //установка маркера для обращения к базе данных shop из persistence
     private EntityManager entityManager;
 
     public Cart createCart() {
@@ -27,7 +27,7 @@ public class CartManagerBean {
         return cart;
     }
 
-    public boolean addToCart(long productId, long cartId, int quantity) {
+    public boolean addToCart(long productId, long cartId, int quantity) {    //добавление продукта в сущность ProductInCart
         Product product = entityManager.find(Product.class, productId);
         if(product == null) {
             return false;
@@ -47,7 +47,7 @@ public class CartManagerBean {
         return true;
     }
 
-    public boolean addUserCart(long cartId, long userId, int size, int sum) {
+    public boolean addUserCart(long cartId, long userId, int size, int sum) {    //добавление корзины и пользователя в сущность CartInUser
         Cart cart = entityManager.find(Cart.class, cartId);
         if (cart == null) {
             return false;
@@ -69,7 +69,7 @@ public class CartManagerBean {
         return true;
     }
 
-    public List<Cart> getCartInUser(long userId) {
+    public List<Cart> getCartInUser(long userId) {        //получение корзины для пользователя из сущности CartInUser
         User user = entityManager.find(User.class, userId);
         if(user == null) {
             return Collections.emptyList();

@@ -22,7 +22,7 @@ import java.util.List;
 
 @Named
 @SessionScoped
-public class UserBean implements Serializable {
+public class UserBean implements Serializable {           //отвечает за редактирование пользователей из админки
     private User user;
     private List<User> users;
     private String login;
@@ -112,7 +112,7 @@ public class UserBean implements Serializable {
         this.admin = admin;
     }
 
-    public void onRowEdit(RowEditEvent event) {
+    public void onRowEdit(RowEditEvent event) {      //редактирование поля в таблице юзеров в админке
         User editUser = (User)event.getObject();
         userManagerBean.editUser(editUser);
         FacesMessage msg = new FacesMessage("Изменено", String.valueOf(editUser.getId()));
@@ -132,7 +132,7 @@ public class UserBean implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().redirect("users.xhtml");
     }
 
-    public void onDelete() throws IOException {
+    public void onDelete() throws IOException {        //удаление поля в таблице юзеров в админке, через контекстное меню
         users.remove(user);
         userManagerBean.deleteUser(user.getId());
         FacesMessage msg = new FacesMessage("Пользователь удален");

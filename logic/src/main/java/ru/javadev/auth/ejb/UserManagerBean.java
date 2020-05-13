@@ -16,7 +16,7 @@ public class UserManagerBean {
     @PersistenceContext(unitName = "shopPU")
     private EntityManager entityManager;
 
-    public User createUser(String login, String password, String city, String email, String number, boolean admin) {
+    public User createUser(String login, String password, String city, String email, String number, boolean admin) { //создание сущности user с данными
         User user = new User();
         user.setLogin(login);
         user.setPassword(password);
@@ -30,11 +30,11 @@ public class UserManagerBean {
         return user;
     }
 
-    public List<User> getUsers() {
+    public List<User> getUsers() {      //получение всех сущностей user
         return entityManager.createQuery("select u from Users u", User.class).getResultList();
     }
 
-    public User getUser(String login) {
+    public User getUser(String login) {       //получение сущности user по логину
         return (User)entityManager.createQuery("select u from Users u where u.login = :login").setParameter("login", login).getResultList().get(0);
     }
 
@@ -51,12 +51,12 @@ public class UserManagerBean {
         return user2;
     }
 
-    public int CheckLogin(String login) {
+    public int CheckLogin(String login) {           //проверка существования сущности user по логину
         List<User> logins = entityManager.createQuery("select u from Users u where u.login = :login").setParameter("login", login).getResultList();
         return logins.size();
     }
 
-    public boolean CheckPassword(String login, String password) {
+    public boolean CheckPassword(String login, String password) {     //проверка существования пароля в сущности user по логину
         List<User> logins = entityManager.createQuery("select u from Users u where u.login = :login").setParameter("login", login).getResultList();
         return logins.get(0).getPassword().equals(password);
     }
@@ -71,7 +71,7 @@ public class UserManagerBean {
         return emails.size();
     }
 
-    public boolean AdminStatus(String login) {
+    public boolean AdminStatus(String login) {      //проверка статуса админа по логину
         List<User> adminstatus = entityManager.createQuery("select u from Users u where u.login = :login").setParameter("login", login).getResultList();
         return adminstatus.get(0).isAdmin();
     }
