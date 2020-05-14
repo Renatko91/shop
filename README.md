@@ -17,4 +17,4 @@ Architecture project:
     - logic (frontend)
     - view (backend)
 
-![Translater](https://i.imgur.com/qLQOlSm.gif)
+![Translater](https://i.imgur.com/FVaLgRG.gif)
